@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.MajorMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Major" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="majorId" property="majorid" jdbcType="VARCHAR" />
+    <result column="majorNa" property="majorna" jdbcType="VARCHAR" />
+    <result column="depaid" property="depaid" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from major
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Major" >
+    insert into major (id, majorId, majorNa, 
+      depaid)
+    values (#{id,jdbcType=INTEGER}, #{majorid,jdbcType=VARCHAR}, #{majorna,jdbcType=VARCHAR}, 
+      #{depaid,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Major" >
+    update major
+    set majorId = #{majorid,jdbcType=VARCHAR},
+      majorNa = #{majorna,jdbcType=VARCHAR},
+      depaid = #{depaid,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, majorId, majorNa, depaid
+    from major
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, majorId, majorNa, depaid
+    from major
+  </select>
+  <!--学生专业查询-->
+  <select id="findMajorAll" parameterType="Major" resultMap="BaseResultMap">
+    select * from major
+    where
+    <if test="majorid!=null and majorid!='' ">
+      majorid = #{majorid}
+    </if>
+  </select>
+</mapper>

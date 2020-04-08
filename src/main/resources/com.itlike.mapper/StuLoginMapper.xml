@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.StuLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.StuLogin" >
+    <id column="sl_id" property="slId" jdbcType="INTEGER" />
+    <result column="sl_username" property="slUsername" jdbcType="VARCHAR" />
+    <result column="sl_password" property="slPassword" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from stu_login
+    where sl_id = #{slId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.StuLogin" >
+    insert into stu_login (sl_id, sl_username, sl_password
+      )
+    values (#{slId,jdbcType=INTEGER}, #{slUsername,jdbcType=VARCHAR}, #{slPassword,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.StuLogin" >
+    update stu_login
+    set sl_username = #{slUsername,jdbcType=VARCHAR},
+      sl_password = #{slPassword,jdbcType=VARCHAR}
+    where sl_id = #{slId,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select sl_id, sl_username, sl_password
+    from stu_login
+    where sl_id = #{slId,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select sl_id, sl_username, sl_password
+    from stu_login
+  </select>
+
+  <!--学生登陆查询-->
+  <select id="findStulogin" parameterType="StuLogin" resultMap="BaseResultMap">
+    select * from stu_login
+    where
+    <if test="slUsername!=null and slUsername!='' ">
+      sl_username = #{slUsername}
+    </if>
+    <if test="slPassword!=null and slPassword!='' ">
+      and sl_password = #{slPassword}
+    </if>
+  </select>
+</mapper>

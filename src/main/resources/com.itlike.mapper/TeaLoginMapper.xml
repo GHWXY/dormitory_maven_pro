@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.TeaLoginMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.TeaLogin" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="username" property="username" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tea_login
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.TeaLogin" >
+    insert into tea_login (id, username, password
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.TeaLogin" >
+    update tea_login
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, username, password
+    from tea_login
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, username, password
+    from tea_login
+  </select>
+  <!--辅导员登陆查询-->
+  <select id="findTealogin" parameterType="TeaLogin" resultMap="BaseResultMap">
+    select * from tea_login
+    where
+    <if test="username!=null and username!='' ">
+      username = #{username}
+    </if>
+    <if test="password!=null and password!='' ">
+      and password = #{password}
+    </if>
+  </select>
+</mapper>

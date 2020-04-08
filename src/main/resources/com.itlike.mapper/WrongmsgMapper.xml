@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.WrongmsgMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Wrongmsg" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stuid" property="stuid" jdbcType="BIGINT" />
+    <result column="stuname" property="stuname" jdbcType="VARCHAR" />
+    <result column="wrongday" property="wrongday" jdbcType="DATE" />
+    <result column="wrongreason" property="wrongreason" jdbcType="VARCHAR" />
+    <result column="result" property="result" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from wrongmsg
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Wrongmsg"  useGeneratedKeys="true" keyProperty="id">
+    insert into wrongmsg (id, stuid, stuname, 
+      wrongday, wrongreason, result
+      )
+    values (#{id}, #{stuid}, #{stuname},
+      #{wrongday}, #{wrongreason}, #{result}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Wrongmsg" >
+    update wrongmsg
+    set stuid = #{stuid,jdbcType=BIGINT},
+      stuname = #{stuname,jdbcType=VARCHAR},
+      wrongday = #{wrongday,jdbcType=DATE},
+      wrongreason = #{wrongreason,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, stuid, stuname, wrongday, wrongreason, result
+    from wrongmsg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, stuid, stuname, wrongday, wrongreason, result
+    from wrongmsg
+  </select>
+
+  <!--查询数据总数-->
+  <select id="totalCount"  resultType="Integer">
+    select count(stuid) from wrongmsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid like  '%${stuid}%'
+      </if>
+      <if test="stuname!=null and stuname!=''">
+        and  stuname like  '%${stuname}%'
+      </if>
+    </where>
+  </select>
+
+  <!--分页查询-->
+  <select id="getWrongList" parameterType="Wrongmsg" resultType="Wrongmsg">
+    select * from wrongmsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid like  '%${stuid}%'
+      </if>
+      <if test="stuname!=null and stuname!=''">
+        and  stuname like  '%${stuname}%'
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+  <!--查询数据总数 学生用-->
+  <select id="totalCountStu"  resultType="Integer">
+    select count(stuid) from wrongmsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+  </select>
+
+  <!--分页查询 学生用-->
+  <select id="getWrongListStu" parameterType="Wrongmsg" resultType="Wrongmsg">
+    select * from wrongmsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+</mapper>

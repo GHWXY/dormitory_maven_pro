@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.RepairMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Repair" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stuid" property="stuid" jdbcType="CHAR" />
+    <result column="dormno" property="dormno" jdbcType="INTEGER" />
+    <result column="roomno" property="roomno" jdbcType="VARCHAR" />
+    <result column="servicetype" property="servicetype" jdbcType="VARCHAR" />
+    <result column="servicereason" property="servicereason" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="time" property="time" jdbcType="DATE" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from repair
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Repair" useGeneratedKeys="true" keyProperty="id">
+    insert into repair (id, stuid, dormno, 
+      roomno, servicetype, servicereason, 
+      name, phone, time, state
+      )
+    values (#{id}, #{stuid}, #{dormno},
+      #{roomno}, #{servicetype}, #{servicereason},
+      #{name}, #{phone}, now(), #{state}
+      )
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Repair" >
+    update repair
+    set
+      state = #{state,jdbcType=VARCHAR}
+    where stuid = #{stuid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, stuid, dormno, roomno, servicetype, servicereason, name, phone, time, 
+    state
+    from repair
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, stuid, dormno, roomno, servicetype, servicereason, name, phone, time, 
+    state
+    from repair
+  </select>
+
+  <!--分页查询-->
+  <select id="getRepairList" parameterType="Repair" resultType="Repair">
+    select * from repair
+    <where>
+      <if test="dormno!=null and dormno!='' ">
+        and  dormno like  '%${dormno}%'
+      </if>
+      <if test="state!=null and state!=''">
+        and  state like  '%${state}%'
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+
+  <!--查询数据总数-->
+  <select id="totalCount"  resultType="Integer">
+    select count(stuid) from repair
+    <where>
+      <if test="dormno!=null and dormno!='' ">
+        and  dormno like  '%${dormno}%'
+      </if>
+      <if test="state!=null and state!=''">
+        and  state like  '%${state}%'
+      </if>
+    </where>
+  </select>
+  <!--查询数据总数-->
+  <select id="totalCountStu"  resultType="Integer">
+    select count(stuid) from repair
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+  </select>
+  <!--分页查询-->
+  <select id="getRepairListStu" parameterType="Repair" resultType="Repair">
+    select * from repair
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+  <!--删除  学生用-->
+  <delete id="deleteRepairByPrimaryKey" parameterType="java.lang.String" >
+    delete from repair
+    where stuid = #{stuid,jdbcType=INTEGER}
+  </delete>
+</mapper>

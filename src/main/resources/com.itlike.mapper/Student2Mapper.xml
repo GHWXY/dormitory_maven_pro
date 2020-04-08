@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.Student2Mapper">
+    <resultMap id="BaseResultMap" type="com.itlike.domain.Student2">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="depaid" property="depaid" jdbcType="VARCHAR"/>
+        <result column="majorid" property="majorid" jdbcType="VARCHAR"/>
+        <result column="gradeid" property="gradeid" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="dormno" property="dormno" jdbcType="VARCHAR"/>
+        <result column="roomno" property="roomno" jdbcType="VARCHAR"/>
+        <result column="bedno" property="bedno" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="s_id" property="sId" jdbcType="INTEGER"/>
+    </resultMap>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from student2
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="com.itlike.domain.Student2">
+    insert into student2 (id, name, depaid, 
+      majorid, gradeid, sex, 
+      dormno, roomno, bedno, 
+      phone, s_id)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{depaid,jdbcType=VARCHAR}, 
+      #{majorid,jdbcType=VARCHAR}, #{gradeid,jdbcType=VARCHAR}, #{sex,jdbcType=VARCHAR}, 
+      #{dormno,jdbcType=VARCHAR}, #{roomno,jdbcType=VARCHAR}, #{bedno,jdbcType=VARCHAR}, 
+      #{phone,jdbcType=VARCHAR}, #{sId,jdbcType=INTEGER})
+  </insert>
+    <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Student2">
+    update student2
+    set
+      phone = #{phone,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    select id, name, depaid, majorid, gradeid, sex, dormno, roomno, bedno, phone, s_id
+    from student2
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+    <select id="selectAll" resultMap="BaseResultMap">
+    select id, name, depaid, majorid, gradeid, sex, dormno, roomno, bedno, phone, s_id
+    from student2
+  </select>
+    <!--学生信息查询-->
+    <select id="findStuAll" parameterType="Student2" resultMap="BaseResultMap">
+        select * from student2
+        where
+        <if test="name!=null and name!='' ">
+            name = #{name}
+        </if>
+    </select>
+    <!--此方法作废-->
+    <update id="updateByStuid" parameterType="com.itlike.domain.Student2">
+        update student2
+        <set>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="depaid!=null and depaid!=''">
+                depaid = #{depaid},
+            </if>
+            <if test="majorid!=null and majorid!=''">
+                majorid = #{majorid},
+            </if>
+            <if test="gradeid!=null and gradeid!=''">
+                gradeid = #{gradeid},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex = #{sex},
+            </if>
+            <if test="dormno!=null and dormno!=''">
+                dormno = #{dormno},
+            </if>
+            <if test="roomno!=null and roomno!=''">
+                roomno = #{roomno},
+            </if>
+            <if test="bedno!=null and bedno!=''">
+                bedno = #{bedno},
+            </if>
+            <if test="phone!=null and phone!=''">
+                phone = #{phone},
+            </if>
+            <if test="s_id!=null and s_id!=''">
+                s_id = #{sId}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+</mapper>

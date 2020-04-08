@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.ProductMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Product" >
+    <id column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="pname" property="pname" jdbcType="VARCHAR" />
+    <result column="pprice" property="pprice" jdbcType="DOUBLE" />
+    <result column="ptotal" property="ptotal" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from product
+    where pid = #{pid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Product" >
+    insert into product (pid, pname, pprice, 
+      ptotal)
+    values (#{pid,jdbcType=INTEGER}, #{pname,jdbcType=VARCHAR}, #{pprice,jdbcType=DOUBLE}, 
+      #{ptotal,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Product" >
+    update product
+    set pname = #{pname,jdbcType=VARCHAR},
+      pprice = #{pprice,jdbcType=DOUBLE},
+      ptotal = #{ptotal,jdbcType=INTEGER}
+    where pid = #{pid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select pid, pname, pprice, ptotal
+    from product
+    where pid = #{pid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select pid, pname, pprice, ptotal
+    from product
+  </select>
+
+  <!--查询数据总数-->
+  <select id="totalCount"  resultType="Integer">
+    select count(pname) from product
+    <where>
+      <if test="pname!=null and pname!='' ">
+        and  pname like  '%${pname}%'
+      </if>
+    </where>
+  </select>
+
+  <!--分页查询-->
+  <select id="getProductList" parameterType="Product" resultType="Product">
+    select * from product
+    <where>
+      <if test="pname!=null and pname!='' ">
+        and  pname like  '%${pname}%'
+      </if>
+    </where>
+    ORDER BY  pid asc
+    limit #{currentPage},#{pageSize}
+  </select>
+</mapper>

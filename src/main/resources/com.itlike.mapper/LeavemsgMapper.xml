@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.LeavemsgMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Leavemsg" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="stuid" property="stuid" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="firsttime" property="firsttime" jdbcType="TIMESTAMP" />
+    <result column="lasttime" property="lasttime" jdbcType="TIMESTAMP" />
+    <result column="leavereason" property="leavereason" jdbcType="VARCHAR" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="studentphone" property="studentphone" jdbcType="VARCHAR" />
+    <result column="parentsphone" property="parentsphone" jdbcType="VARCHAR" />
+    <result column="state" property="state" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from leavemsg
+    where stuid = #{stuid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Leavemsg" useGeneratedKeys="true" keyProperty="id">
+    insert into leavemsg (id, stuid, name, 
+      firsttime, lasttime, leavereason, 
+      address, studentphone, parentsphone, 
+      state)
+    values (#{id}, #{stuid}, #{name},
+      #{firsttime}, #{lasttime}, #{leavereason},
+      #{address}, #{studentphone}, #{parentsphone},
+      #{state})
+  </insert>
+  <!--请假审批-->
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Leavemsg" >
+    update leavemsg
+    set
+      state = #{state,jdbcType=VARCHAR}
+    where stuid = #{stuid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select id, stuid, name, firsttime, lasttime, leavereason, address, studentphone, 
+    parentsphone, state
+    from leavemsg
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select id, stuid, name, firsttime, lasttime, leavereason, address, studentphone, 
+    parentsphone, state
+    from leavemsg
+  </select>
+
+  <!--查询数据总数-->
+  <select id="totalCount"  resultType="Integer">
+    select count(stuid) from leavemsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid like  '%${stuid}%'
+      </if>
+      <if test="state!=null and state!=''">
+        and  state like  '%${state}%'
+      </if>
+    </where>
+  </select>
+
+  <!--分页查询-->
+  <select id="getRepairList" parameterType="Leavemsg" resultType="Leavemsg">
+    select * from leavemsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid like  '%${stuid}%'
+      </if>
+      <if test="state!=null and state!=''">
+        and  state like  '%${state}%'
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+  <!--分页查询-->
+  <select id="getLeavemsgList" parameterType="Leavemsg" resultType="Leavemsg">
+    select * from leavemsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid like  '%${stuid}%'
+      </if>
+      <if test="name!=null and name!='' ">
+        and  name like  '%${name}%'
+      </if>
+      <if test="state!=null and state!=''">
+        and  state like  '%${state}%'
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+
+  <!--查询数据总数-->
+  <select id="totalCount2"  resultType="Integer">
+    select count(stuid) from leavemsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+  </select>
+  <!--分页查询-->
+  <select id="getLeaveList" parameterType="Leavemsg" resultType="Leavemsg">
+    select * from leavemsg
+    <where>
+      <if test="stuid!=null and stuid!='' ">
+        and  stuid = #{stuid}
+      </if>
+    </where>
+    ORDER BY  id asc
+    limit #{currentPage},#{pageSize}
+  </select>
+</mapper>

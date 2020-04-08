@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itlike.mapper.OrderitemMapper" >
+  <resultMap id="BaseResultMap" type="com.itlike.domain.Orderitem" >
+    <id column="otid" property="otid" jdbcType="INTEGER" />
+    <result column="count" property="count" jdbcType="INTEGER" />
+    <result column="subtotal" property="subtotal" jdbcType="DOUBLE" />
+    <result column="pid" property="pid" jdbcType="INTEGER" />
+    <result column="oid" property="oid" jdbcType="INTEGER" />
+    <result column="dormid" property="dormid" jdbcType="INTEGER" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from orderitem
+    where otid = #{otid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.itlike.domain.Orderitem" >
+    insert into orderitem (otid, count, subtotal, 
+      pid, oid, dormid)
+    values (#{otid,jdbcType=INTEGER}, #{count,jdbcType=INTEGER}, #{subtotal,jdbcType=DOUBLE}, 
+      #{pid,jdbcType=INTEGER}, #{oid,jdbcType=INTEGER}, #{dormid,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="com.itlike.domain.Orderitem" >
+    update orderitem
+    set count = #{count,jdbcType=INTEGER},
+      subtotal = #{subtotal,jdbcType=DOUBLE},
+      pid = #{pid,jdbcType=INTEGER},
+      oid = #{oid,jdbcType=INTEGER},
+      dormid = #{dormid,jdbcType=INTEGER}
+    where otid = #{otid,jdbcType=INTEGER}
+  </update>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select otid, count, subtotal, pid, oid, dormid
+    from orderitem
+    where otid = #{otid,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap" >
+    select otid, count, subtotal, pid, oid, dormid
+    from orderitem
+  </select>
+</mapper>
